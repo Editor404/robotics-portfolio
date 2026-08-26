@@ -5,14 +5,14 @@
 
 ## 2. 주요 구현 내용
 - **DH Parameter & Forward Kinematics**:
-  - 4개 링크에 대한 Denavit-Hartenberg 파라미터 정의
-  - 각 링크 변환행렬(^1, T_1^2, T_2^3, T_3^4$) 및 엔드이펙터 최종 변환행렬(^4$) 심볼릭 유도
+  - 4개 링크에 대한 Denavit-Hartenberg 파라미터를 정의했습니다.
+  - 각 링크 변환행렬($T_0^1$, $T_1^2$, $T_2^3$, $T_3^4$)과 엔드이펙터 최종 변환행렬($T_0^4$)을 심볼릭으로 유도했습니다.
 - **질량중심 속도 및 Jacobian**:
-  - 각 링크의 질량중심 위치($) 및 자코비안 행렬을 통한 선속도($)와 각속도($\omega$) 연산
+  - 각 링크의 질량중심 위치($p_c$)를 정의하고, 자코비안 행렬을 통해 선속도($v = J\dot{q}$)와 각속도($\omega$)를 계산했습니다.
 - **Lagrangian Dynamics & 토크 제어 방정식**:
-  - 시스템 운동에너지($)와 위치에너지($)를 통한 라그랑지안( = K - P$) 계산
-  - 관성 행렬 (	heta)$, 코리올리/원심력 행렬 (	heta, \dot{	heta})$, 중력 벡터 (	heta)$ 도출
-  - 최종 관절 구동 토크 수식 $	au = M(	heta)\ddot{	heta} + C(	heta, \dot{	heta})\dot{	heta} + G(	heta)$ 유도
+  - 시스템 운동에너지($K$)와 위치에너지($P$)를 통해 라그랑지안($L = K - P$)을 구성했습니다.
+  - 관성 행렬 $M(\theta)$, 코리올리/원심력 행렬 $C(\theta, \dot{\theta})$, 중력 벡터 $G(\theta)$를 분리했습니다.
+  - 최종 관절 구동 토크 수식 $\tau = M(\theta)\ddot{\theta} + C(\theta, \dot{\theta})\dot{\theta} + G(\theta)$를 유도했습니다.
 
 ## 3. 기술 스택
 - **Language**: MATLAB (Symbolic Math Toolbox)

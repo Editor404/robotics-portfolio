@@ -137,8 +137,9 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 1. **센서 인터페이스 및 하드웨어 타이머 제어**:
    - TCRT5000(적외선 반사), Thermistor(온도), DHT11(습도), CDS(조도), 가변저항 센서 회로 설계.
    - Timer1 Fast PWM 모드를 활용하여 서보모터의 회전 각도 및 개폐 속도를 지터(Jitter) 없이 정밀 제어.
+
 2. **센서 노이즈 필터링 (Kalman & IIR Filter)**:
-   - 센서 원시 데이터의 고주파 노이즈와 튀는 값을 제거하기 위해 IIR 1차 저주파 통과 필터($y[n] = lpha x[n] + (1-lpha)y[n-1]$) 및 1차 칼만 필터($K_k = P_k^- / (P_k^- + R)$) 설계.
+   - 센서 원시 데이터의 고주파 노이즈와 튀는 값을 제거하기 위해 IIR 1차 저주파 통과 필터($y[n] = \alpha x[n] + (1-\alpha)y[n-1]$) 및 1차 칼만 필터($K_k = P_k^- / (P_k^- + R)$) 설계.
    - UART 직렬 통신으로 MATLAB과 연동하여 필터 전/후의 신호 왜곡 및 노이즈 감쇄 효과를 정량적으로 비교 분석.
 3. **오실로스코프 기반 전기적 신호 정합성 검증**:
    - TCRT5000, DHT11, 서보모터 PWM 제어 핀의 전압 평균, 피크-투-피크($V_{p-p}$), 주기, 주파수를 오실로스코프로 실측하여 펌웨어의 시간 타이밍 무결성 검증.
@@ -156,12 +157,12 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 ### 핵심 구현 알고리즘
 
 1. **Canny Edge Detection 파이프라인 구현**:
-   - $5	imes 5$ 가우시안 1차 미분 마스크를 통한 이미지 $x, y$ 방향 Gradient ($G_x, G_y$) 및 크기($M$), 방향($	heta$) 연산.
+   - $5\times 5$ 가우시안 1차 미분 마스크를 통한 이미지 $x, y$ 방향 Gradient ($G_x, G_y$) 및 크기($M$), 방향($\theta$) 연산.
    - 8-방향(0°, 45°, 90°, 135°) Non-Maximum Suppression(NMS) 적용으로 얇은 1픽셀 엣지 추출.
    - High/Low 이중 임계치(Double Thresholding)와 연결성 기반 Hysteresis Tracking으로 노이즈에 강인한 엣지 보존.
 2. **Harris Corner Detection**:
-   - 국소 영역 구조 텐서(Structure Tensor) $M = \sum w(x, y) egin{bmatrix} I_x^2 & I_x I_y \ I_x I_y & I_y^2 \end{bmatrix}$ 계산.
-   - 코너 응답 함수 $R = \det(M) - k(	ext{trace}(M))^2$ ($k=0.04$)를 적용하여 로봇 특징점 매칭에 사용되는 코너 검출.
+   - 국소 영역 구조 텐서(Structure Tensor) $M = \sum w(x, y) \begin{bmatrix} I_x^2 & I_x I_y \\ I_x I_y & I_y^2 \end{bmatrix}$ 계산.
+   - 코너 응답 함수 $R = \det(M) - k(\text{trace}(M))^2$ ($k=0.04$)를 적용하여 로봇 특징점 매칭에 사용되는 코너 검출.
 3. **Circle Hough Transform & Otsu 이진화**:
    - 3차원 누적 배열(Accumulator Array)을 구성하여 $(x-a)^2 + (y-b)^2 = r^2$ 형태의 원 중심과 반지름 공간 투표(Voting).
    - 클래스 간 분산(Between-class variance) $\sigma_B^2(t)$를 최대화하는 최적 임계치 자동 도출 Otsu 이진화 구현.
@@ -170,7 +171,7 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 
 ## 05. 4자유도 매니퓰레이터 기구학 및 동역학 토크 해석
 
-> **DH Parameter 기반 다관절 로봇 기구학 수식 유도, 자코비안 속도 연산 및 라그랑지안 역학 기반 관절 구동 토크($	au$) 심볼릭 해석**
+> **DH Parameter 기반 다관절 로봇 기구학 수식 유도, 자코비안 속도 연산 및 라그랑지안 역학 기반 관절 구동 토크($\tau$) 심볼릭 해석**
 
 * **개발 기간**: 2024.03 ~ 2024.06 (로봇제어)
 * **주요 역할**: 4-DOF 로봇 기하학적 파라미터 수립 및 MATLAB 심볼릭 연산 스크립트(`middle.m`) 작성
@@ -179,15 +180,27 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 ### 핵심 유도 수식 및 모델링
 
 1. **Denavit-Hartenberg (DH) Parameter 및 Forward Kinematics**:
-   - 4개 링크에 대한 $a_i, lpha_i, d_i, 	heta_i$ 파라미터 정의.
-   - 동차 변환 행렬 $T_{i-1}^i = 	ext{Rot}_z(	heta_i)	ext{Trans}_z(d_i)	ext{Trans}_x(a_i)	ext{Rot}_x(lpha_i)$ 유도.
+   - 4개 링크에 대한 $a_i, \alpha_i, d_i, \theta_i$ 파라미터 정의.
+   - 동차 변환 행렬 $T_{i-1}^i = \text{Rot}_z(\theta_i)\text{Trans}_z(d_i)\text{Trans}_x(a_i)\text{Rot}_x(\alpha_i)$ 유도.
    - $T_0^1, T_0^2, T_0^3, T_0^4$ 변환 행렬을 심볼릭 연산으로 도출하여 엔드이펙터의 위치와 자세를 수식화.
 2. **Jacobian & 질량중심 선속도/각속도 연산**:
-   - 각 링크 질량중심 위치 $p_c$에 대한 자코비안 행렬 $J(q) = rac{\partial p_c}{\partial q}$를 구하고, 선속도 $v = J\dot{q}$ 및 각속도 $\omega$ 산출.
+   - 각 링크 질량중심 위치 $p_c$에 대한 자코비안 행렬 $J(q) = \frac{\partial p_c}{\partial q}$를 구하고, 선속도 $v = J\dot{q}$ 및 각속도 $\omega$ 산출.
 3. **Lagrangian Dynamics 기반 관절 토크 계산식 유도**:
-   - 총 운동에너지 $K = \sum rac{1}{2}(m_i v_i^T v_i + \omega_i^T I_i \omega_i)$ 및 위치에너지 $P = \sum m_i g^T p_{c,i}$를 통해 라그랑지안 $L = K - P$ 도출.
-   - $rac{d}{dt}\left(rac{\partial L}{\partial \dot{	heta}}ight) - rac{\partial L}{\partial 	heta} = 	au$ 방정식으로부터 관성 행렬 $M(	heta)$, 코리올리 및 원심력 행렬 $C(	heta, \dot{	heta})$, 중력 벡터 $G(	heta)$ 분리.
-   - 최종 Computed Torque 제어 방정식 $	au = M(	heta)\ddot{	heta} + C(	heta, \dot{	heta})\dot{	heta} + G(	heta)$ 도출.
+   - 총 운동에너지 $K = \sum \frac{1}{2}(m_i v_i^T v_i + \omega_i^T I_i \omega_i)$ 및 위치에너지 $P = \sum m_i g^T p_{c,i}$를 통해 라그랑지안 $L = K - P$ 도출.
+   - $\frac{d}{dt}\left(\frac{\partial L}{\partial \dot{\theta}}\right) - \frac{\partial L}{\partial \theta} = \tau$ 방정식으로부터 관성 행렬 $M(\theta)$, 코리올리 및 원심력 행렬 $C(\theta, \dot{\theta})$, 중력 벡터 $G(\theta)$ 분리.
+   - 최종 Computed Torque 제어 방정식 $\tau = M(\theta)\ddot{\theta} + C(\theta, \dot{\theta})\dot{\theta} + G(\theta)$ 도출.
+
+---
+
+## 📊 Sim2Real & 엔지니어링 검증 매트릭스
+
+| 검증 항목 | Gazebo 3D 시뮬레이션 | 실제 물리 하드웨어 (Real Robot) | 달성 상태 |
+| :--- | :--- | :--- | :---: |
+| **Homography 평면 맵핑 오차** | RMSE 0.21 cm (노이즈 없는 이상적 카메라) | **RMSE 0.94 cm** (카메라 왜곡 보정 후 오차 $\le \pm 1\text{cm}$) | ✅ PASS |
+| **흡착 손실 안전 반응 시간** | Gazebo Contact Sensor 기준 즉각 반응 | **45 ms 이내** (31kHz PWM 블로워 100% 강제 상승 및 모터 차단) | ✅ PASS |
+| **자이로 드리프트 누적 오차** | 드리프트 0.0 dps | **0.02 dps** (정지 바이어스 -1.35 dps 보정 후) | ✅ PASS |
+| **온디바이스 제어 루프 주기** | - | **25.4 FPS** (비동기 큐 멀티스레딩 최적화 적용) | ✅ PASS |
+| **서보 PWM 지터 (Jitter)** | - | **< 0.5 μs** (ATmega128 Timer1 Fast PWM 오실로스코프 실측) | ✅ PASS |
 
 ---
 

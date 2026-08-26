@@ -10,16 +10,16 @@
 ## 2. 주요 구현 알고리즘 및 수학적 원리
 
 ### 1) Canny Edge Detection (5단계 파이프라인 직접 구현)
-1. **Gaussian Smoothing**: $5	imes 5$ 가우시안 필터 ($\sigma=1.4$)로 고주파 노이즈 제거
-2. **Gradient Calculation**: $x, y$ 방향 소벨 마스크 합성으로 기울기 크기 $M(x,y) = \sqrt{G_x^2 + G_y^2}$ 및 방향 $	heta = rctan(G_y / G_x)$ 연산
+1. **Gaussian Smoothing**: $5\times 5$ 가우시안 필터 ($\sigma=1.4$)로 고주파 노이즈 제거
+2. **Gradient Calculation**: $x, y$ 방향 소벨 마스크 합성으로 기울기 크기 $M(x,y) = \sqrt{G_x^2 + G_y^2}$ 및 방향 $\theta = \arctan(G_y / G_x)$ 연산
 3. **Non-Maximum Suppression (NMS)**: 8방향(0°, 45°, 90°, 135°)으로 양자화하여 그래디언트 방향에서 극대값이 아닌 픽셀 억제
 4. **Double Thresholding**: $T_{high}$ (강한 엣지)와 $T_{low}$ (약한 엣지)로 분할
 5. **Hysteresis Edge Tracking**: 강한 엣지와 8-이웃으로 연결된 약한 엣지만 유효 엣지로 보존
 
 ### 2) Harris Corner Detection
 - 국소 영역 구조 텐서(Structure Tensor) 행렬 $M$ 구성:
-  $$M = \sum_{(x,y)} w(x,y) egin{bmatrix} I_x^2 & I_x I_y \ I_x I_y & I_y^2 \end{bmatrix}$$
-- 코너 응답 점수: $R = \det(M) - k \cdot (	ext{trace}(M))^2$ ($k=0.04$)
+  $$M = \sum_{(x,y)} w(x,y) \begin{bmatrix} I_x^2 & I_x I_y \\ I_x I_y & I_y^2 \end{bmatrix}$$
+- 코너 응답 점수: $R = \det(M) - k \cdot (\text{trace}(M))^2$ ($k=0.04$)
 - 국소 최대점(Local Maxima) 탐색을 통해 코너 좌표 추출
 
 ### 3) Circle Hough Transform & Otsu 이진화
