@@ -53,10 +53,10 @@ def control_loop(frame, cnn_model, yolo_results, fsm_state):
     # 1. 차선 ROI 크롭 및 전처리
     roi = preprocess_lane_image(frame[240:480, :])
     steering_angle = float(cnn_model.predict(roi, verbose=0)[0][0])
-    
+
     # 2. YOLO 감지 결과로부터 이벤트 추출
     detected_objects = parse_yolo_boxes(yolo_results)
-    
+
     # 3. FSM 상태 전이
     if "traffic_red" in detected_objects:
         fsm_state = "RED_WAIT"
@@ -64,7 +64,7 @@ def control_loop(frame, cnn_model, yolo_results, fsm_state):
         fsm_state = "STOPPING"
     elif fsm_state == "RED_WAIT" and "traffic_green" in detected_objects:
         fsm_state = "DRIVE"
-        
+
     # 4. 상태별 모터 구동값 결정
     speed, steer = execute_fsm_action(fsm_state, steering_angle)
     motor_driver.set_speed(speed)

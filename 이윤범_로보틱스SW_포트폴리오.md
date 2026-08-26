@@ -4,7 +4,7 @@
 
 - **지원 기업**: (주)테솔로 (TESOLLO)
 - **지원 직무**: 로봇/로보틱스 S/W 엔지니어 (그리퍼 제어 알고리즘 · 협동/산업용 로봇 티칭 · 로봇 통합 시스템 개발)
-- **지원자**: 이윤범 (광운대학교 로봇학부 / 2020741023)
+- **지원자**: 이윤범 (광운대학교 로봇학부 )
 - **핵심 역량**: ROS2 (Jazzy/Humble), Camera Calibration & Homography, Embedded Sensor/Motor Control (C/C++, ATmega, Arduino), C++ Computer Vision, Robot Kinematics & Lagrangian Dynamics
 
 ---

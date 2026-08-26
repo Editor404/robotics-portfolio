@@ -25,7 +25,7 @@
 PyTorch, ConvNeXt-Tiny, Medical Image Classification, Multi-label Classification, BCEWithLogitsLoss, AdamW, Post-processing
 
 ## 근거 파일
-- `딥러닝/2020741023_이윤범_중이염예측_보고서.docx`
+- `딥러닝/이윤범_중이염예측_보고서.docx`
 - `딥러닝/model.py`
 - `딥러닝/inference.py`
-- `딥러닝/submissions_2020741023.zip`
+- `딥러닝/submissions.zip`

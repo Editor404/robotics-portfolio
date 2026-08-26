@@ -75,7 +75,7 @@ portfolio/
 ├── README.md                            # 포트폴리오 요약 및 깃허브 메인 문서
 ├── 이윤범_로보틱스SW_포트폴리오.md       # 서류 제출용 상세 포트폴리오 문서
 ├── 이윤범_로보틱스SW_포트폴리오.docx     # Word 제출용 문서
-├── 테솔로_자기소개서_2020741023_이윤범.md # 맞춤형 자기소개서
+├── 테솔로_자기소개서_이윤범.md # 맞춤형 자기소개서
 ├── projects/                            # 세부 프로젝트별 기술 심층 분석 보고서
 │   ├── window-ai-robot-capstone.md      # 01. Window AI Robot (ROS2 캡스톤)
 │   ├── raspberry-pi-autonomous-driving.md # 02. 온디바이스 비전 자율주행
