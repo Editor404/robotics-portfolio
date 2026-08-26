@@ -208,6 +208,15 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 
 ---
 
+
+## 보조 프로젝트. 로봇프로그래밍 자율주행 시스템
+
+* **GitHub 근거**: [https://github.com/dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming) (`로봇프로그래밍/팀플git.txt`)
+* **본인 기여**: 전체 시스템 설계, 모터제어, SLAM 기반 맵 생성, 이미 구현된 전역 Path Planning 알고리즘을 활용한 자율주행 통합
+* **핵심 성과**: 로봇 구동부 제어와 지도 생성/전역 경로계획 결과를 연결하여, 단순 알고리즘 구현이 아니라 실제 로봇 자율주행 시스템으로 동작하도록 통합했습니다.
+
+---
+
 ## 🎯 (주)테솔로 직무 기여 방안 (Why TESOLLO)
 
 | 테솔로 주요 업무 | 이윤범의 보유 기술 및 즉각적 기여 방안 |

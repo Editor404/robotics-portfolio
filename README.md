@@ -57,9 +57,15 @@
 | :--- | :--- | :--- |
 | `캡스톤/` | [Editor404/WindowAIRobot](https://github.com/Editor404/WindowAIRobot) | Window AI Robot 캡스톤 코드 근거 |
 | `피지컬ai/` | [Editor404/openVLA-with-Raccoonbot](https://github.com/Editor404/openVLA-with-Raccoonbot) | OpenVLA/Raccoonbot 실험 근거 |
-| `로봇프로그래밍/` | [dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming) | 로봇프로그래밍 팀 프로젝트 근거 |
+| `로봇프로그래밍/` | [dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming) | 전체 시스템 설계, 모터제어, SLAM 맵 생성, 전역 Path Planning 기반 자율주행 기여 |
 
 ---
+
+
+### 보조 프로젝트: 로봇프로그래밍 자율주행 시스템
+- **GitHub 근거**: [dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming) (`로봇프로그래밍/팀플git.txt`)
+- **본인 기여**: 전체 시스템 설계, 모터제어, SLAM 기반 맵 생성, 이미 구현된 전역 Path Planning 알고리즘을 활용한 자율주행 통합
+- **역량 포인트**: 로봇 하드웨어 구동부와 지도 생성/경로계획 소프트웨어를 연결해 실제 자율주행 동작으로 통합한 경험
 
 ## 📂 저장소 파일 구조
 
