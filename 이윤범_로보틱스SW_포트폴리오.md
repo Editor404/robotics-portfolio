@@ -42,6 +42,10 @@
 
 ---
 
+> 프로젝트 원본은 하나의 저장소에 모두 합치지 않고, 각 과목/프로젝트 폴더의 GitHub 메모(`*.txt`)가 있는 경우 해당 개별 저장소를 근거 링크로 연결했습니다. 확인된 개별 저장소: [WindowAIRobot](https://github.com/Editor404/WindowAIRobot), [openVLA-with-Raccoonbot](https://github.com/Editor404/openVLA-with-Raccoonbot), [Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming).
+
+---
+
 ## 01. [대표 캡스톤 프로젝트] Window AI Robot: ROS2 기반 지능형 창문 청소 로봇
 
 > **비전 카메라 왜곡 보정부터 YOLOv8 오염 분할, Homography 절대 좌표 변환, IMU 센서 융합, 압력 기반 흡착 블로워 제어, Gazebo 3D 시뮬레이션까지 수직 통합한 ROS2 로봇 시스템**

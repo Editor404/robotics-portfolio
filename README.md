@@ -48,6 +48,19 @@
 
 ---
 
+
+## 🔗 프로젝트별 GitHub 근거 연결 원칙
+
+이 포트폴리오는 하나의 저장소에 모든 프로젝트 원본을 합쳐 올리기보다, 각 프로젝트 폴더 안의 GitHub 메모(`*.txt`)가 확인되는 경우 해당 프로젝트의 개별 저장소를 1차 근거로 연결합니다.
+
+| 로컬 폴더 | GitHub 근거 저장소 | 비고 |
+| :--- | :--- | :--- |
+| `캡스톤/` | [Editor404/WindowAIRobot](https://github.com/Editor404/WindowAIRobot) | Window AI Robot 캡스톤 코드 근거 |
+| `피지컬ai/` | [Editor404/openVLA-with-Raccoonbot](https://github.com/Editor404/openVLA-with-Raccoonbot) | OpenVLA/Raccoonbot 실험 근거 |
+| `로봇프로그래밍/` | [dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming) | 로봇프로그래밍 팀 프로젝트 근거 |
+
+---
+
 ## 📂 저장소 파일 구조
 
 ```
