@@ -4,7 +4,7 @@
 - **수행 교과**: 로봇학실험 3 (2023년 2학기)
 - **개발 환경**: ATmega128 (16MHz), Microchip Studio, C/C++, MATLAB, Digital Oscilloscope
 - **본인 역할**: **전체 시스템 설계, 하드웨어 회로 구현(100%), MCU 펌웨어 개발, UART 통신 및 오실로스코프 측정**
-- **근거 파일**: `로실3/로봇학실험3 7조 보고서-1.pdf`, `로실3/main.cpp`, `로실3/interrupt방식.mp4`, `로실3/polling방식.mp4`
+- **공개 원본 근거**: [`evidence/atmega-smart-trash-bin/`](../evidence/atmega-smart-trash-bin/) (`main.cpp`, `atmega128_team_code.cpp`, 하드웨어 동작 영상)
 
 ---
 

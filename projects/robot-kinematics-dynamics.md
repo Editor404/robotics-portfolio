@@ -19,4 +19,4 @@
 - **Concepts**: Denavit-Hartenberg (DH) Parameter, Forward Kinematics, Jacobian, Lagrangian Dynamics, Computed Torque
 
 ## 4. 근거 파일
-- `로봇제어/middle.m` (156줄의 완전한 MATLAB 심볼릭 연산 스크립트)
+- [`evidence/robot-kinematics-dynamics/middle.m`](../evidence/robot-kinematics-dynamics/middle.m) (156줄의 완전한 MATLAB 심볼릭 연산 스크립트)

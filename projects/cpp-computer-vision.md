@@ -3,7 +3,7 @@
 ## 1. 프로젝트 개요
 - **수행 교과**: 컴퓨터비전 (2023년 1학기)
 - **개발 환경**: C++ (Modern C++), Qt Creator, MinGW / GCC
-- **근거 파일**: `컴퓨터비전/이윤범_7주차/*.cpp`, `컴퓨터비전/이윤범.pdf`
+- **공개 원본 근거**: [`evidence/cpp-computer-vision/week7-source/`](../evidence/cpp-computer-vision/week7-source/) (Qt/C++ 원본 소스)
 
 ---
 

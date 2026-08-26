@@ -3,7 +3,7 @@
 ## 1. 프로젝트 개요
 - **수행 교과**: 온디바이스 인공지능 (2024년 2학기)
 - **개발 환경**: Raspberry Pi 5, Python 3.10, TensorFlow/Keras, OpenCV, YOLOv5n, DC/Servo Motor
-- **근거 파일**: `온디바이스인공지능/온디바이스_4조.docx`, `온디바이스인공지능/자율주행자동차모델생성.ipynb`
+- **공개 원본 근거**: [`evidence/on-device-ai/`](../evidence/on-device-ai/) (`self-driving-model-training.ipynb`, `on-device-ai-team-report.docx`, `lane_navigation_*.h5`)
 
 ---
 

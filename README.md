@@ -49,6 +49,12 @@
 ---
 
 
+## 📎 원본 근거 파일
+
+GitHub 주소가 따로 없는 프로젝트는 `evidence/` 폴더에 공개 가능한 원본 코드/보고서/모델 파일을 함께 포함했습니다. 대용량 모델, 강의자료, 학번 등 개인정보가 포함된 원본은 제외하거나 익명화 사본으로 대체했습니다.
+
+---
+
 ## 🔗 프로젝트별 GitHub 근거 연결 원칙
 
 이 포트폴리오는 하나의 저장소에 모든 프로젝트 원본을 합쳐 올리기보다, 각 프로젝트 폴더 안의 GitHub 메모(`*.txt`)가 확인되는 경우 해당 프로젝트의 개별 저장소를 1차 근거로 연결합니다.
@@ -77,6 +83,7 @@ portfolio/
 ├── 이윤범_로보틱스SW_포트폴리오.docx     # Word 제출용 문서
 ├── 테솔로_자기소개서_이윤범.md # 맞춤형 자기소개서
 ├── projects/                            # 세부 프로젝트별 기술 심층 분석 보고서
+├── evidence/                            # GitHub 링크 없는 프로젝트의 공개 원본 근거
 │   ├── window-ai-robot-capstone.md      # 01. Window AI Robot (ROS2 캡스톤)
 │   ├── raspberry-pi-autonomous-driving.md # 02. 온디바이스 비전 자율주행
 │   ├── atmega-smart-trash-bin.md        # 03. ATmega128 센서-모터 제어

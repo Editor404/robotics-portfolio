@@ -5,3 +5,6 @@ original-cover-letter-extracted.txt
 candidate-review.md
 tesollo-application-draft.md
 tesollo-fit.md
+# Company-specific private application drafts kept locally only
+테솔로_자기소개서_*.md
+테솔로_자기소개서_*.docx
