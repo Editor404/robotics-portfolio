@@ -859,7 +859,7 @@
           <div class="comp-icon">⚙️</div>
           <h3>C++ Vision &amp; Robotics Mathematics</h3>
         </div>
-        <p>순수 C++/Qt 환경에서 Canny Edge, Harris Corner, Hough Transform, Otsu 이진화를 직접 코딩했으며, MATLAB Symbolic Math로 4-DOF 로봇의 라그랑지안 관성($\mathbf{M}$), 코리올리($\mathbf{C}$), 중력($\mathbf{G}$) 및 토크 제어식($\tau$)을 도출했습니다.</p>
+        <p>순수 C++/Qt 환경에서 Canny Edge, Harris Corner, Hough Transform, Otsu 이진화를 직접 코딩했으며, PyTorch ConvNeXt 기반 측두골 CT 다중 레이블 분류 모델로 의료영상 AI 파이프라인까지 구현했습니다.</p>
       </div>
     </section>
 
@@ -1130,46 +1130,49 @@ target_y_cm = target_metric[0][0][1]</div>
         </div>
       </article>
 
-      <!-- 05. 4-DOF Kinematics & Dynamics -->
-      <article class="project-card" data-category="math ros">
+      <!-- 05. ConvNeXt Medical Image Classification -->
+      <article class="project-card" data-category="vision ai">
         <div class="project-top">
-          <span class="rank-tag normal">05 / ROBOTICS KINEMATICS &amp; DYNAMICS</span>
-          <span class="project-period">2024.03 ~ 2024.06 (로봇제어)</span>
+          <span class="rank-tag normal">05 / MEDICAL VISION AI</span>
+          <span class="project-period">2026.03 ~ 2026.06 (딥러닝)</span>
         </div>
-        <h3 class="project-title">4자유도 매니퓰레이터 기구학 및 동역학 토크 해석</h3>
+        <h3 class="project-title">ConvNeXt 기반 측두골 CT 중이염 다중 레이블 분류</h3>
         <p class="project-summary">
-          4축 매니퓰레이터의 DH 파라미터를 정의하고, 자코비안 및 라그랑지안 역학을 기반으로 관성 행렬($\mathbf{M}$), 코리올리($\mathbf{C}$), 중력 벡터($\mathbf{G}$) 및 관절 구동 토크 방정식을 유도했습니다.
+          측두골 CT PNG 슬라이스에서 우측/좌측 측두골 영역과 우측/좌측 중이염 여부를 동시에 예측하는 4출력 다중 레이블 분류 모델입니다. ConvNeXt-Tiny 백본, 클래스 불균형 보정 BCEWithLogitsLoss, threshold 후처리를 적용해 Accuracy 88.86%, Macro F1 0.8848을 달성했습니다.
         </p>
 
         <div class="feature-list">
           <div class="feature-item">
-            <strong>DH Parameter &amp; Forward Kinematics 해석</strong>
-            동차 변환 행렬 $T_0^1 \sim T_0^4$ 및 자코비안 $J(q)$ 기반 질량중심 선속도/각속도 심볼릭 연산을 수행했습니다.
+            <strong>ConvNeXt-Tiny 기반 4출력 다중 레이블 분류</strong>
+            ImageNet-1K 사전학습 ConvNeXt-Tiny 백본 위에 4차원 classification head를 구성하고, 환자 단위 train/validation 분리로 데이터 누수를 줄였습니다.
           </div>
           <div class="feature-item">
-            <strong>Lagrangian Dynamics 기반 토크 제어 방정식 도출</strong>
-            $L = K - P$로부터 Computed Torque 제어 방정식 <em>$\tau = \mathbf{M}(\theta)\ddot{\theta} + \mathbf{C}(\theta, \dot{\theta})\dot{\theta} + \mathbf{G}(\theta)$</em>을 심볼릭 연산으로 유도했습니다.
+            <strong>클래스 불균형 보정 및 후처리 검증</strong>
+            <em>pos_weight</em>를 적용한 BCEWithLogitsLoss와 클래스별 threshold, 슬라이스 연속성 기반 후처리를 통해 CT 슬라이스 3,320장 평가에서 Accuracy 88.86%, Macro F1 0.8848을 기록했습니다.
           </div>
         </div>
 
         <details class="evidence-box">
-          <summary>기술 근거 확인 (MATLAB 심볼릭 연산 스크립트)</summary>
+          <summary>기술 근거 확인 (PyTorch 모델 &amp; 추론 코드)</summary>
           <div class="evidence-content">
-            <p><strong>📂 로컬 소스 파일:</strong> <code>/home/keivn/학교포폴/로봇제어/middle.m</code></p>
+            <p><strong>📂 공개 원본 근거:</strong> <a href="https://github.com/Editor404/robotics-portfolio/tree/main/evidence/convnext-otitis-ct" target="_blank"><code>evidence/convnext-otitis-ct/</code></a></p>
             <ul>
-              <li><code>middle.m</code>: 156줄의 완전한 MATLAB Symbolic Math 스크립트 (DH 행렬, Jacobian, Lagrangian, M/C/G 행렬 및 토크 방정식 심볼릭 연산)</li>
+              <li><code>model.py</code>: ConvNeXt-Tiny 백본 및 4출력 classifier 정의</li>
+              <li><code>inference.py</code>: threshold 기반 추론 및 제출/검증 파이프라인</li>
+              <li><code>submission_validation.csv</code>: 검증 결과 근거</li>
+              <li><code>otitis-ct-report-redacted.docx</code>: 학번 제거 공개 보고서</li>
             </ul>
-            <p style="margin-top: 8px;"><strong>📄 상세 케이스 스터디:</strong> <a href="projects/robot-kinematics-dynamics.md">projects/robot-kinematics-dynamics.md</a></p>
+            <p style="margin-top: 8px;"><strong>📄 상세 케이스 스터디:</strong> <a href="projects/convnext-otitis-ct.md">projects/convnext-otitis-ct.md</a></p>
           </div>
         </details>
 
         <div class="tag-wrap">
-          <span class="tag">MATLAB</span>
-          <span class="tag">Symbolic Math</span>
-          <span class="tag">Kinematics</span>
-          <span class="tag">Jacobian</span>
-          <span class="tag">Lagrangian Dynamics</span>
-          <span class="tag">Torque Control</span>
+          <span class="tag">PyTorch</span>
+          <span class="tag">ConvNeXt-Tiny</span>
+          <span class="tag">Medical Image AI</span>
+          <span class="tag">Multi-label Classification</span>
+          <span class="tag">BCEWithLogitsLoss</span>
+          <span class="tag">Threshold Tuning</span>
         </div>
       </article>
 
@@ -1292,7 +1295,19 @@ target_y_cm = target_metric[0][0][1]</div>
           </td>
         </tr>
         <tr>
-          <td><strong>05. 4-DOF 로봇 제어</strong></td>
+          <td><strong>05. ConvNeXt CT 의료영상 분류</strong></td>
+          <td>
+            <a href="https://github.com/Editor404/robotics-portfolio/tree/main/evidence/convnext-otitis-ct" target="_blank"><code>evidence/convnext-otitis-ct/</code></a><br/>
+            &bull; <code>model.py</code>, <code>inference.py</code><br/>
+            &bull; <code>submission_validation.csv</code>, <code>otitis-ct-report-redacted.docx</code>
+          </td>
+          <td>
+            &bull; Accuracy 88.86%, Macro F1 0.8848<br/>
+            &bull; ConvNeXt-Tiny 4출력 다중 레이블 분류 원본 코드
+          </td>
+        </tr>
+        <tr>
+          <td><strong>보조. 4-DOF 로봇 제어</strong></td>
           <td>
             <a href="https://github.com/Editor404/robotics-portfolio/tree/main/evidence/robot-kinematics-dynamics" target="_blank"><code>evidence/robot-kinematics-dynamics/</code></a><br/>
             &bull; <code>middle.m</code> (156줄 심볼릭 연산 스크립트)

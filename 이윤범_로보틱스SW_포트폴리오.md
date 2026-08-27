@@ -173,26 +173,26 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 
 ---
 
-## 05. 4자유도 매니퓰레이터 기구학 및 동역학 토크 해석
+## 05. ConvNeXt 기반 측두골 CT 중이염 다중 레이블 분류
 
-> **DH Parameter 기반 다관절 로봇 기구학 수식 유도, 자코비안 속도 연산 및 라그랑지안 역학 기반 관절 구동 토크($\tau$) 심볼릭 해석**
+> **측두골 CT 슬라이스에서 좌/우 측두골 영역 및 좌/우 중이염 여부를 동시에 예측하는 4출력 다중 레이블 의료영상 분류 모델**
 
-* **개발 기간**: 2024.03 ~ 2024.06 (로봇제어)
-* **주요 역할**: 4-DOF 로봇 기하학적 파라미터 수립 및 MATLAB 심볼릭 연산 스크립트(`middle.m`) 작성
-* **기술 스택**: `MATLAB (Symbolic Math)`, `Kinematics`, `Jacobian`, `Lagrangian Dynamics`, `DH Parameters`, `Torque Control`
+* **개발 기간**: 2026.03 ~ 2026.06 (딥러닝)
+* **주요 역할**: PyTorch 모델 구조 구현, 환자 단위 데이터 분리, 클래스 불균형 보정, threshold 기반 추론/후처리
+* **기술 스택**: `PyTorch`, `ConvNeXt-Tiny`, `Medical Image Classification`, `Multi-label Classification`, `BCEWithLogitsLoss`, `AdamW`
+* **공개 원본 근거**: `evidence/convnext-otitis-ct/model.py`, `inference.py`, `submission_validation.csv`, `otitis-ct-report-redacted.docx`
 
-### 핵심 유도 수식 및 모델링
+### 핵심 구현 및 성과
 
-1. **Denavit-Hartenberg (DH) Parameter 및 Forward Kinematics**:
-   - 4개 링크에 대한 $a_i, \alpha_i, d_i, \theta_i$ 파라미터 정의.
-   - 동차 변환 행렬 $T_{i-1}^i = \text{Rot}_z(\theta_i)\text{Trans}_z(d_i)\text{Trans}_x(a_i)\text{Rot}_x(\alpha_i)$ 유도.
-   - $T_0^1, T_0^2, T_0^3, T_0^4$ 변환 행렬을 심볼릭 연산으로 도출하여 엔드이펙터의 위치와 자세를 수식화.
-2. **Jacobian & 질량중심 선속도/각속도 연산**:
-   - 각 링크 질량중심 위치 $p_c$에 대한 자코비안 행렬 $J(q) = \frac{\partial p_c}{\partial q}$를 구하고, 선속도 $v = J\dot{q}$ 및 각속도 $\omega$ 산출.
-3. **Lagrangian Dynamics 기반 관절 토크 계산식 유도**:
-   - 총 운동에너지 $K = \sum \frac{1}{2}(m_i v_i^T v_i + \omega_i^T I_i \omega_i)$ 및 위치에너지 $P = \sum m_i g^T p_{c,i}$를 통해 라그랑지안 $L = K - P$ 도출.
-   - $\frac{d}{dt}\left(\frac{\partial L}{\partial \dot{\theta}}\right) - \frac{\partial L}{\partial \theta} = \tau$ 방정식으로부터 관성 행렬 $M(\theta)$, 코리올리 및 원심력 행렬 $C(\theta, \dot{\theta})$, 중력 벡터 $G(\theta)$ 분리.
-   - 최종 Computed Torque 제어 방정식 $\tau = M(\theta)\ddot{\theta} + C(\theta, \dot{\theta})\dot{\theta} + G(\theta)$ 도출.
+1. **ConvNeXt-Tiny 기반 4출력 분류 모델 구성**:
+   - ImageNet-1K 사전학습 ConvNeXt-Tiny를 backbone으로 사용하고, dropout 및 4차원 linear classifier head를 연결했습니다.
+   - 우측/좌측 측두골 영역과 우측/좌측 중이염 여부를 하나의 모델에서 동시에 예측하도록 다중 레이블 구조로 설계했습니다.
+2. **데이터 누수 완화 및 클래스 불균형 보정**:
+   - 환자 단위 train/validation 분리를 적용하여 동일 환자 슬라이스가 학습/검증에 동시에 섞이는 문제를 줄였습니다.
+   - 양성 클래스 불균형을 보정하기 위해 `pos_weight`를 적용한 `BCEWithLogitsLoss`를 사용했습니다.
+3. **정량 평가 및 후처리**:
+   - 평가 슬라이스 3,320장 기준 Accuracy **88.86%**, Macro F1-score **0.8848**을 기록했습니다.
+   - 클래스별 threshold와 슬라이스 연속성 기반 후처리를 적용하고, 우측 중이염 recall 한계를 분석했습니다.
 
 ---
 
@@ -208,6 +208,15 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 
 ---
 
+
+
+## 보조 프로젝트. 4자유도 매니퓰레이터 기구학 및 동역학 토크 해석
+
+* **공개 원본 근거**: [`evidence/robot-kinematics-dynamics/middle.m`](evidence/robot-kinematics-dynamics/middle.m)
+* **핵심 내용**: 4-DOF 매니퓰레이터의 DH Parameter, Forward Kinematics, Jacobian, Lagrangian Dynamics를 MATLAB Symbolic Math로 유도했습니다.
+* **보조 근거로 둔 이유**: 실제 시스템 구현 프로젝트보다는 수학적 모델링 역량을 보완적으로 보여주는 과제 성격이 강해 대표 5대 프로젝트에서는 제외했습니다.
+
+---
 
 ## 보조 프로젝트. 로봇프로그래밍 자율주행 시스템
 
