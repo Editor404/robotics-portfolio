@@ -1,6 +1,6 @@
 # Evidence originals
 
-This directory contains public, project-level evidence files for portfolio projects that do not have a dedicated GitHub URL in their original course/project folder.
+This directory contains public, project-level evidence files for portfolio projects that do not have a dedicated GitHub URL in their original course/project folder. Projects with a confirmed `github.txt` are linked to their original repository instead of duplicating the full source tree here.
 
 ## Included
 
@@ -9,6 +9,12 @@ This directory contains public, project-level evidence files for portfolio proje
 - `cpp-computer-vision/week7-source/`: original Qt/C++ source files for Canny, Harris, Hough, histogram, and UI integration.
 - `robot-kinematics-dynamics/`: MATLAB symbolic dynamics source (`middle.m`).
 - `convnext-otitis-ct/`: PyTorch model/inference source, validation CSV, and a redacted report copy.
+
+## GitHub-linked originals
+
+- Physical AI / OpenVLA RaccoonBot gripper project: [Editor404/openVLA-with-Raccoonbot](https://github.com/Editor404/openVLA-with-Raccoonbot) from `피지컬ai/github.txt`.
+- Window AI Robot capstone: [Editor404/WindowAIRobot](https://github.com/Editor404/WindowAIRobot).
+- Robot Programming autonomous driving: [dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming).
 
 ## Excluded intentionally
 

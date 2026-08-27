@@ -816,8 +816,8 @@
         <div class="metric-lbl">하드웨어 타이머 기반 초고속 흡착 블로워 제어</div>
       </div>
       <div class="metric-card">
-        <div class="metric-val purple">4-DOF</div>
-        <div class="metric-lbl">DH 파라미터 &amp; 라그랑지안 토크 방정식 유도</div>
+        <div class="metric-val purple">OpenVLA</div>
+        <div class="metric-lbl">RaccoonBot 그리퍼 task-balanced 데이터셋 확장</div>
       </div>
     </section>
 
@@ -859,7 +859,7 @@
           <div class="comp-icon">⚙️</div>
           <h3>C++ Vision &amp; Robotics Mathematics</h3>
         </div>
-        <p>순수 C++/Qt 환경에서 Canny Edge, Harris Corner, Hough Transform, Otsu 이진화를 직접 코딩했으며, PyTorch ConvNeXt 기반 측두골 CT 다중 레이블 분류 모델로 의료영상 AI 파이프라인까지 구현했습니다.</p>
+        <p>순수 C++/Qt 환경에서 Canny Edge, Harris Corner, Hough Transform, Otsu 이진화를 직접 코딩했으며, OpenVLA/MuJoCo 기반 Physical AI 데이터셋 파이프라인과 PyTorch ConvNeXt 기반 의료영상 AI 파이프라인까지 구현했습니다.</p>
       </div>
     </section>
 
@@ -1130,49 +1130,55 @@ target_y_cm = target_metric[0][0][1]</div>
         </div>
       </article>
 
-      <!-- 05. ConvNeXt Medical Image Classification -->
-      <article class="project-card" data-category="vision ai">
+      <!-- 05. Physical AI / OpenVLA RaccoonBot -->
+      <article class="project-card" data-category="ros vision math">
         <div class="project-top">
-          <span class="rank-tag normal">05 / MEDICAL VISION AI</span>
-          <span class="project-period">2026.03 ~ 2026.06 (딥러닝)</span>
+          <span class="rank-tag normal">05 / PHYSICAL AI · OPENVLA GRIPPER</span>
+          <span class="project-period">2026.06 (피지컬 AI)</span>
         </div>
-        <h3 class="project-title">ConvNeXt 기반 측두골 CT 중이염 다중 레이블 분류</h3>
+        <h3 class="project-title">Physical AI / OpenVLA 기반 RaccoonBot 그리퍼 파이프라인</h3>
         <p class="project-summary">
-          측두골 CT PNG 슬라이스에서 우측/좌측 측두골 영역과 우측/좌측 중이염 여부를 동시에 예측하는 4출력 다중 레이블 분류 모델입니다. ConvNeXt-Tiny 백본, 클래스 불균형 보정 BCEWithLogitsLoss, threshold 후처리를 적용해 Accuracy 88.86%, Macro F1 0.8848을 달성했습니다.
+          RaccoonBot MuJoCo 그리퍼 환경에서 grasp/push/pick-and-place 데이터를 생성하고, RLDS/TFDS 변환 및 OpenVLA LoRA 학습·추론까지 연결한 Physical AI 프로젝트입니다. 그리퍼 action label과 OpenVLA convention을 정합화하고 task-balanced 데이터셋으로 확장했습니다.
         </p>
 
         <div class="feature-list">
           <div class="feature-item">
-            <strong>ConvNeXt-Tiny 기반 4출력 다중 레이블 분류</strong>
-            ImageNet-1K 사전학습 ConvNeXt-Tiny 백본 위에 4차원 classification head를 구성하고, 환자 단위 train/validation 분리로 데이터 누수를 줄였습니다.
+            <strong>그리퍼 demonstration 물리 타당성 개선</strong>
+            접근 중에는 gripper를 연 상태로 유지하고 grasp-height에서만 닫도록 수정했으며, 인위적 물체 부착 대신 <em>MuJoCo contact 기반 성공 판정</em>으로 잡기 데이터를 생성했습니다.
           </div>
           <div class="feature-item">
-            <strong>클래스 불균형 보정 및 후처리 검증</strong>
-            <em>pos_weight</em>를 적용한 BCEWithLogitsLoss와 클래스별 threshold, 슬라이스 연속성 기반 후처리를 통해 CT 슬라이스 3,320장 평가에서 Accuracy 88.86%, Macro F1 0.8848을 기록했습니다.
+            <strong>OpenVLA용 task-balanced 데이터셋 구축</strong>
+            <code>grasp</code>, <code>push</code>, <code>pick_and_place</code> 작업과 4개 색상·3개 형상을 지원하고, <em>RLDS/TFDS 변환 및 task-balanced mixture</em>를 등록했습니다.
+          </div>
+          <div class="feature-item">
+            <strong>action safety 및 gripper convention 정합화</strong>
+            idle frame 제거 후 action delta가 과대 기록되는 문제를 수정하고, 수집기 gripper label <code>0=open, 1=close</code>를 OpenVLA convention <code>1=open, 0=close</code>로 변환했습니다.
           </div>
         </div>
 
         <details class="evidence-box">
-          <summary>기술 근거 확인 (PyTorch 모델 &amp; 추론 코드)</summary>
+          <summary>기술 근거 확인 (GitHub 원본 저장소 &amp; 검증 로그)</summary>
           <div class="evidence-content">
-            <p><strong>📂 공개 원본 근거:</strong> <a href="https://github.com/Editor404/robotics-portfolio/tree/main/evidence/convnext-otitis-ct" target="_blank"><code>evidence/convnext-otitis-ct/</code></a></p>
+            <p><strong>📂 GitHub 근거:</strong> <a href="https://github.com/Editor404/openVLA-with-Raccoonbot" target="_blank"><code>Editor404/openVLA-with-Raccoonbot</code></a> · <code>피지컬ai/github.txt</code>로 원본 연결 확인</p>
             <ul>
-              <li><code>model.py</code>: ConvNeXt-Tiny 백본 및 4출력 classifier 정의</li>
-              <li><code>inference.py</code>: threshold 기반 추론 및 제출/검증 파이프라인</li>
-              <li><code>submission_validation.csv</code>: 검증 결과 근거</li>
-              <li><code>otitis-ct-report-redacted.docx</code>: 학번 제거 공개 보고서</li>
+              <li><code>Mujoco/raccoon_env.py</code>: RaccoonBot 시뮬레이션 환경 및 4D/7D action 실행</li>
+              <li><code>Mujoco/raccoon_grasp_multicolor_scene_dataset.py</code>: grasp 데이터 생성</li>
+              <li><code>Mujoco/raccoon_multitask_colored_objects_dataset.py</code>: push/pick-and-place 멀티태스크 데이터 생성</li>
+              <li><code>Mujoco/rlds_dataset_builder/build_task_balanced_tfds.py</code>: task-balanced TFDS 빌드</li>
+              <li><code>results/logs/</code>, <code>Mujoco/test_*.py</code>: 학습·추론 로그 및 회귀 테스트</li>
             </ul>
-            <p style="margin-top: 8px;"><strong>📄 상세 케이스 스터디:</strong> <a href="projects/convnext-otitis-ct.md">projects/convnext-otitis-ct.md</a></p>
+            <p style="margin-top: 8px;"><strong>📄 상세 케이스 스터디:</strong> <a href="projects/physical-ai-openvla-raccoonbot.md">projects/physical-ai-openvla-raccoonbot.md</a></p>
           </div>
         </details>
 
         <div class="tag-wrap">
-          <span class="tag">PyTorch</span>
-          <span class="tag">ConvNeXt-Tiny</span>
-          <span class="tag">Medical Image AI</span>
-          <span class="tag">Multi-label Classification</span>
-          <span class="tag">BCEWithLogitsLoss</span>
-          <span class="tag">Threshold Tuning</span>
+          <span class="tag">MuJoCo</span>
+          <span class="tag">OpenVLA</span>
+          <span class="tag">RLDS/TFDS</span>
+          <span class="tag">LoRA Fine-tuning</span>
+          <span class="tag">Robot Grasping</span>
+          <span class="tag">IK</span>
+          <span class="tag">Simulation QA</span>
         </div>
       </article>
 
@@ -1295,15 +1301,15 @@ target_y_cm = target_metric[0][0][1]</div>
           </td>
         </tr>
         <tr>
-          <td><strong>05. ConvNeXt CT 의료영상 분류</strong></td>
+          <td><strong>05. Physical AI / OpenVLA 그리퍼</strong></td>
           <td>
-            <a href="https://github.com/Editor404/robotics-portfolio/tree/main/evidence/convnext-otitis-ct" target="_blank"><code>evidence/convnext-otitis-ct/</code></a><br/>
-            &bull; <code>model.py</code>, <code>inference.py</code><br/>
-            &bull; <code>submission_validation.csv</code>, <code>otitis-ct-report-redacted.docx</code>
+            <code>/home/keivn/학교포폴/피지컬ai/</code><br/>
+            &bull; <code>github.txt</code> → <a href="https://github.com/Editor404/openVLA-with-Raccoonbot" target="_blank">Editor404/openVLA-with-Raccoonbot</a><br/>
+            &bull; <code>Mujoco/raccoon_env.py</code>, <code>raccoon_*_dataset.py</code>, <code>rlds_dataset_builder/</code>
           </td>
           <td>
-            &bull; Accuracy 88.86%, Macro F1 0.8848<br/>
-            &bull; ConvNeXt-Tiny 4출력 다중 레이블 분류 원본 코드
+            &bull; grasp/push/pick-and-place task-balanced 데이터셋<br/>
+            &bull; OpenVLA LoRA 학습·추론 로그 및 MuJoCo 회귀 테스트
           </td>
         </tr>
         <tr>
@@ -1318,13 +1324,15 @@ target_y_cm = target_metric[0][0][1]</div>
         </tr>
 
         <tr>
-          <td><strong>추가. Physical AI / OpenVLA</strong></td>
+          <td><strong>보조. ConvNeXt CT 의료영상 분류</strong></td>
           <td>
-            <code>/home/keivn/학교포폴/피지컬ai/</code><br/>
-            &bull; <code>github.txt</code>, <code>physical_ai_experiment.ipynb</code>
+            <a href="https://github.com/Editor404/robotics-portfolio/tree/main/evidence/convnext-otitis-ct" target="_blank"><code>evidence/convnext-otitis-ct/</code></a><br/>
+            &bull; <code>model.py</code>, <code>inference.py</code><br/>
+            &bull; <code>submission_validation.csv</code>, <code>otitis-ct-report-redacted.docx</code>
           </td>
           <td>
-            &bull; <a href="https://github.com/Editor404/openVLA-with-Raccoonbot" target="_blank">GitHub 저장소 공개</a> (<code>피지컬ai/github.txt</code>)
+            &bull; Accuracy 88.86%, Macro F1 0.8848<br/>
+            &bull; ConvNeXt-Tiny 4출력 다중 레이블 분류 원본 코드
           </td>
         </tr>
         <tr>
@@ -1361,7 +1369,7 @@ target_y_cm = target_metric[0][0][1]</div>
           <td><strong>그리퍼 제어 알고리즘 개발</strong></td>
           <td>
             &bull; ATmega128/Arduino 임베디드 펌웨어 개발 및 Kalman Filter 신호 처리 역량을 바탕으로, <strong>다자유도 그리퍼의 촉각/압력 센서 피드백 기반 파지(Grasping) 및 힘/토크 제어 루프</strong>에 즉시 기여.<br/>
-            &bull; 다관절 기구학/동역학 해석 모델링을 통해 로봇 핸드의 손가락 관절별 토크 제어 알고리즘 구현.
+            &bull; Physical AI 프로젝트에서 MuJoCo RaccoonBot 그리퍼 grasp/push/pick-and-place 데이터셋을 만들고 OpenVLA action label 및 gripper convention을 정합화한 경험으로, 시뮬레이션 기반 그리퍼 정책 검증에도 기여.
           </td>
         </tr>
         <tr>

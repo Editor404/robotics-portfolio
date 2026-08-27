@@ -15,7 +15,7 @@
 | :--- | :--- |
 | **Languages** | C/C++ (Modern C++14/17, Qt), Python (Python 3.10+), MATLAB (Symbolic Math), C# (.NET) |
 | **Robotics & Middleware** | ROS2 (Jazzy, Humble), Gazebo Classic Simulation, URDF / STL Modeling, colcon build |
-| **Vision & AI** | OpenCV (Camera Calibration, Undistortion, Homography, PnP), YOLOv8 Segmentation, YOLOv5n, PyTorch, TensorFlow/Keras, ConvNeXt |
+| **Vision & AI** | OpenCV (Camera Calibration, Undistortion, Homography, PnP), YOLOv8 Segmentation, YOLOv5n, PyTorch, TensorFlow/Keras, OpenVLA, MuJoCo, ConvNeXt |
 | **Embedded & Actuators** | Raspberry Pi 5, Arduino Uno, ATmega128, DC Motor (PWM), Servo Motor, 31kHz PWM Blower Driver |
 | **Sensors & Signal Processing**| GY-85 IMU (ITG-3205 Gyro integration & bias tuning), MPX Pressure Sensor (Hysteresis), TCRT5000, DHT11, CDS, Thermistor, Kalman Filter, IIR/FIR Filter, UART / RS-232 Binary Packet Protocol |
 | **Hardware Tools** | Digital Oscilloscope, Logic Analyzer, Microchip Studio, Linux (Ubuntu 22.04 / 24.04), Git / GitHub |
@@ -173,26 +173,35 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 
 ---
 
-## 05. ConvNeXt 기반 측두골 CT 중이염 다중 레이블 분류
+## 05. Physical AI / OpenVLA 기반 RaccoonBot 그리퍼 파이프라인 확장
 
-> **측두골 CT 슬라이스에서 좌/우 측두골 영역 및 좌/우 중이염 여부를 동시에 예측하는 4출력 다중 레이블 의료영상 분류 모델**
+> **RaccoonBot MuJoCo 그리퍼 환경에서 grasp/push/pick-and-place 데이터를 생성하고, RLDS/TFDS 변환 및 OpenVLA LoRA 학습·추론까지 연결한 Physical AI 프로젝트**
 
-* **개발 기간**: 2026.03 ~ 2026.06 (딥러닝)
-* **주요 역할**: PyTorch 모델 구조 구현, 환자 단위 데이터 분리, 클래스 불균형 보정, threshold 기반 추론/후처리
-* **기술 스택**: `PyTorch`, `ConvNeXt-Tiny`, `Medical Image Classification`, `Multi-label Classification`, `BCEWithLogitsLoss`, `AdamW`
-* **공개 원본 근거**: `evidence/convnext-otitis-ct/model.py`, `inference.py`, `submission_validation.csv`, `otitis-ct-report-redacted.docx`
+* **개발 기간**: 2026.06 (피지컬 AI)
+* **GitHub**: [https://github.com/Editor404/openVLA-with-Raccoonbot](https://github.com/Editor404/openVLA-with-Raccoonbot)
+* **주요 역할**: RaccoonBot 그리퍼 MuJoCo 환경 확장, grasp 데이터 생성 안정화, 멀티태스크 데이터셋 구성, OpenVLA용 RLDS/TFDS 변환, action label/그리퍼 convention 정합성 개선
+* **기술 스택**: `Python`, `MuJoCo`, `OpenVLA`, `RLDS/TFDS`, `LoRA Fine-tuning`, `Robot Grasping`, `IK`, `Simulation QA`
+
+```text
+MuJoCo RaccoonBot + Gripper
+  ├─ grasp / push / pick-and-place demonstration 수집
+  ├─ IK precheck, workspace clipping, transition safety filter
+  ├─ RLDS intermediate 변환 및 TFDS build
+  └─ OpenVLA task-balanced mixture 등록 및 LoRA 학습·추론 검증
+```
 
 ### 핵심 구현 및 성과
 
-1. **ConvNeXt-Tiny 기반 4출력 분류 모델 구성**:
-   - ImageNet-1K 사전학습 ConvNeXt-Tiny를 backbone으로 사용하고, dropout 및 4차원 linear classifier head를 연결했습니다.
-   - 우측/좌측 측두골 영역과 우측/좌측 중이염 여부를 하나의 모델에서 동시에 예측하도록 다중 레이블 구조로 설계했습니다.
-2. **데이터 누수 완화 및 클래스 불균형 보정**:
-   - 환자 단위 train/validation 분리를 적용하여 동일 환자 슬라이스가 학습/검증에 동시에 섞이는 문제를 줄였습니다.
-   - 양성 클래스 불균형을 보정하기 위해 `pos_weight`를 적용한 `BCEWithLogitsLoss`를 사용했습니다.
-3. **정량 평가 및 후처리**:
-   - 평가 슬라이스 3,320장 기준 Accuracy **88.86%**, Macro F1-score **0.8848**을 기록했습니다.
-   - 클래스별 threshold와 슬라이스 연속성 기반 후처리를 적용하고, 우측 중이염 recall 한계를 분석했습니다.
+1. **그리퍼 demonstration 물리 타당성 개선**:
+   - 그리퍼를 연 상태로 접근한 뒤 grasp-height 조건에서만 닫도록 수정하고, 인위적 물체 부착 대신 MuJoCo contact 기반 성공 판정을 적용했습니다.
+2. **멀티태스크 데이터셋 확장**:
+   - 4개 색상, 3개 형상, `grasp/push/pick_and_place` 작업 조합을 지원하고 자연어 instruction template을 다양화했습니다.
+   - `raccoon_grasp` 1,080/120, `raccoon_push` 146/16, `raccoon_pick_and_place` 131/15 train/validation 에피소드를 정리했습니다.
+3. **OpenVLA action label 정합성 개선**:
+   - idle frame 제거 후 action delta가 과대 기록되는 문제를 수정하고, gripper label `0=open, 1=close`를 OpenVLA convention `1=open, 0=close`로 변환했습니다.
+   - 축별 최대 이동량 약 4.9 mm 이하로 클라이언트 안전 범위(`max_delta_xyz=0.005`)와 맞는 것을 확인했습니다.
+4. **재현 가능한 검증 근거 정리**:
+   - 공개 저장소에 `Mujoco/test_*.py`, `results/logs/`, episode visualization, `docs/short_report.md`를 남겨 데이터 생성·변환·학습·추론 근거를 추적 가능하게 했습니다.
 
 ---
 
@@ -209,6 +218,15 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 ---
 
 
+
+
+## 보조 프로젝트. ConvNeXt 기반 측두골 CT 중이염 다중 레이블 분류
+
+* **공개 원본 근거**: [`evidence/convnext-otitis-ct/`](evidence/convnext-otitis-ct/)
+* **핵심 성과**: PyTorch ConvNeXt-Tiny 4출력 다중 레이블 분류 모델 구현, Accuracy 88.86% / Macro F1 0.8848 달성
+* **보조 근거로 둔 이유**: AI 모델링 역량은 강하지만, 로보틱스/그리퍼/자율주행 직무 정합성은 Physical AI 프로젝트가 더 높아 대표 5대 프로젝트에서는 교체했습니다.
+
+---
 
 ## 보조 프로젝트. 4자유도 매니퓰레이터 기구학 및 동역학 토크 해석
 
@@ -230,6 +248,6 @@ TensorFlow CNN Regression                              YOLOv5n Detector
 
 | 테솔로 주요 업무 | 이윤범의 보유 기술 및 즉각적 기여 방안 |
 | :--- | :--- |
-| **그리퍼 제어 알고리즘 개발** | &bull; ATmega128 및 Arduino 임베디드 펌웨어 개발 경험과 센서 노이즈 필터링(Kalman Filter) 역량을 바탕으로 **다자유도 그리퍼의 촉각/압력 센서 피드백 기반 파지(Grasping) 제어 루프**에 즉시 기여.<br/>&bull; 다관절 기구학/동역학 토크 해석 모델링을 통해 로봇 핸드의 손가락 링크별 정밀 토크 제어 알고리즘 구현. |
+| **그리퍼 제어 알고리즘 개발** | &bull; ATmega128 및 Arduino 임베디드 펌웨어 개발 경험과 센서 노이즈 필터링(Kalman Filter) 역량을 바탕으로 **다자유도 그리퍼의 촉각/압력 센서 피드백 기반 파지(Grasping) 제어 루프**에 즉시 기여.<br/>&bull; Physical AI 프로젝트에서 MuJoCo RaccoonBot 그리퍼 grasp/push/pick-and-place 데이터셋을 만들고 OpenVLA action label 및 gripper convention을 정합화한 경험으로, 시뮬레이션 기반 그리퍼 정책 검증에도 기여. |
 | **협동/산업용 로봇 티칭** | &bull; Window AI Robot의 Lawn-mower 궤적 플래닝 및 DH Parameter 순/역기구학 해석 역량을 활용하여 **산업용 로봇 매니퓰레이터의 작업 공간(Workspace) 궤적 생성 및 티칭 툴 개발** 지원. |
 | **로봇 통합 시스템 개발** | &bull; ROS2(Jazzy/Humble) 분산 아키텍처, 카메라 캘리브레이션/Homography 좌표계 변환, Gazebo 3D 시뮬레이션 환경 구축 경험을 통해 **상위 비전 AI와 하위 로봇 핸드/모터 하드웨어를 빈틈없이 통합하는 프로덕션 레벨 S/W 시스템** 구축. |

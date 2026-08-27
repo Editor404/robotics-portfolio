@@ -5,6 +5,7 @@
   <img src="https://img.shields.io/badge/C%2B%2B-17%20%2F%20Qt-00599C?logo=c%2B%2B&logoColor=white" />
   <img src="https://img.shields.io/badge/Python-3.10+-3776AB?logo=python&logoColor=white" />
   <img src="https://img.shields.io/badge/Computer_Vision-OpenCV%20%2F%20YOLOv8-5C3EE8?logo=opencv&logoColor=white" />
+  <img src="https://img.shields.io/badge/Physical_AI-OpenVLA%20%2F%20MuJoCo-7C3AED" />
   <img src="https://img.shields.io/badge/Simulation-Gazebo_Classic-orange" />
   <img src="https://img.shields.io/badge/Embedded-ATmega128%20%2F%20Arduino-00979D?logo=arduino&logoColor=white" />
 </div>
@@ -32,7 +33,7 @@
 | **02** | **[온디바이스 비전 자율주행](./projects/raspberry-pi-autonomous-driving.md)** | `Raspberry Pi 5`, `TensorFlow`, `YOLOv5n`, `FSM`, `Multithreading` | CNN 조향각 회귀 + YOLOv5n 객체 감지 비동기 스레딩 최적화로 **25+ FPS 달성** 및 6개 상태 FSM 제어 |
 | **03** | **[ATmega128 센서-모터 제어기](./projects/atmega-smart-trash-bin.md)** | `ATmega128`, `C/C++`, `Kalman Filter`, `Timer1 PWM`, `Oscilloscope` | **본인 기여 100%** · TCRT5000/온습도 센서 회로 설계, 칼만 필터 노이즈 제거, Timer1 Fast PWM 지터 없는 서보 구동 및 오실로스코프 신호 검증 |
 | **04** | **[C++ 컴퓨터비전 알고리즘 구현](./projects/cpp-computer-vision.md)** | `Modern C++`, `Qt`, `Canny Edge`, `Harris Corner`, `Hough Circle` | 외부 라이브러리 없이 순수 C++로 NMS/Hysteresis Canny Edge, 텐서 기반 Harris Corner, Hough 원 검출 직접 코딩 |
-| **05** | **[ConvNeXt 기반 측두골 CT 중이염 다중 레이블 분류](./projects/convnext-otitis-ct.md)** | `PyTorch`, `ConvNeXt-Tiny`, `Medical Image Classification`, `BCEWithLogitsLoss` | 측두골 CT 슬라이스 4출력 다중 레이블 분류 모델 구현, 클래스 불균형 보정 및 threshold 후처리로 **Accuracy 88.86% / Macro F1 0.8848** 달성 |
+| **05** | **[Physical AI / OpenVLA 기반 RaccoonBot 그리퍼 파이프라인](./projects/physical-ai-openvla-raccoonbot.md)** | `MuJoCo`, `OpenVLA`, `RLDS/TFDS`, `LoRA`, `Robot Grasping`, `IK` | **중요 프로젝트** · RaccoonBot 그리퍼 grasp/push/pick-and-place 데이터셋 확장, action label 및 gripper convention 정합화, task-balanced OpenVLA 학습·추론 파이프라인 구축 ([GitHub 저장소](https://github.com/Editor404/openVLA-with-Raccoonbot)) |
 
 ---
 
@@ -62,11 +63,17 @@ GitHub 주소가 따로 없는 프로젝트는 `evidence/` 폴더에 공개 가�
 | 로컬 폴더 | GitHub 근거 저장소 | 비고 |
 | :--- | :--- | :--- |
 | `캡스톤/` | [Editor404/WindowAIRobot](https://github.com/Editor404/WindowAIRobot) | Window AI Robot 캡스톤 코드 근거 |
-| `피지컬ai/` | [Editor404/openVLA-with-Raccoonbot](https://github.com/Editor404/openVLA-with-Raccoonbot) | OpenVLA/Raccoonbot 실험 근거 |
+| `피지컬ai/` | [Editor404/openVLA-with-Raccoonbot](https://github.com/Editor404/openVLA-with-Raccoonbot) | Physical AI / RaccoonBot 그리퍼 OpenVLA 파이프라인 근거 |
 | `로봇프로그래밍/` | [dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming) | 전체 시스템 설계, 모터제어, SLAM 맵 생성, 전역 Path Planning 기반 자율주행 기여 |
 
 ---
 
+
+
+### 보조 프로젝트: ConvNeXt 기반 측두골 CT 중이염 다중 레이블 분류
+- **공개 원본 근거**: [`evidence/convnext-otitis-ct/`](https://github.com/Editor404/robotics-portfolio/tree/main/evidence/convnext-otitis-ct)
+- **핵심 성과**: 측두골 CT 슬라이스 4출력 다중 레이블 분류 모델 구현, Accuracy 88.86% / Macro F1 0.8848 달성
+- **보조 근거로 둔 이유**: AI 모델링 역량은 강하지만, 로보틱스/그리퍼/자율주행 직무 정합성은 Physical AI 프로젝트가 더 높아 대표 5대 프로젝트에서는 교체했습니다.
 
 ### 보조 프로젝트: 로봇프로그래밍 자율주행 시스템
 - **GitHub 근거**: [dlalswo0619/Project-for-RobotProgramming](https://github.com/dlalswo0619/Project-for-RobotProgramming) (`로봇프로그래밍/팀플git.txt`)
@@ -81,14 +88,19 @@ portfolio/
 ├── README.md                            # 포트폴리오 요약 및 깃허브 메인 문서
 ├── 이윤범_로보틱스SW_포트폴리오.md       # 서류 제출용 상세 포트폴리오 문서
 ├── 이윤범_로보틱스SW_포트폴리오.docx     # Word 제출용 문서
-├── 테솔로_자기소개서_이윤범.md # 맞춤형 자기소개서
 ├── projects/                            # 세부 프로젝트별 기술 심층 분석 보고서
+│   ├── window-ai-robot-capstone.md
+│   ├── raspberry-pi-autonomous-driving.md
+│   ├── atmega-smart-trash-bin.md
+│   ├── cpp-computer-vision.md
+│   ├── physical-ai-openvla-raccoonbot.md
+│   ├── convnext-otitis-ct.md
+│   └── robot-kinematics-dynamics.md
 ├── evidence/                            # GitHub 링크 없는 프로젝트의 공개 원본 근거
-│   ├── window-ai-robot-capstone.md      # 01. Window AI Robot (ROS2 캡스톤)
-│   ├── raspberry-pi-autonomous-driving.md # 02. 온디바이스 비전 자율주행
-│   ├── atmega-smart-trash-bin.md        # 03. ATmega128 센서-모터 제어
-│   ├── cpp-computer-vision.md           # 04. C++ 영상처리 알고리즘
-│   ├── convnext-otitis-ct.md            # 05. ConvNeXt 기반 의료영상 분류
-│   └── robot-kinematics-dynamics.md     # 보조. 4-DOF 기구학 및 동역학 해석
+│   ├── on-device-ai/
+│   ├── atmega-smart-trash-bin/
+│   ├── cpp-computer-vision/
+│   ├── convnext-otitis-ct/
+│   └── robot-kinematics-dynamics/
 └── candidate-review.md                  # 포트폴리오 강점 및 직무 정합성 분석
 ```
